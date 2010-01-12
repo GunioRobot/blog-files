@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<title>RP Links</title>
+		<script type="text/javascript" src="jquery.js">
+		</script>
+		
+		<script>
+	
+			links = [
+			new linkObject("http://www.gmail.com", "Gmail"),
+			new linkObject("http://mail.yahoo.com", "Yahoo Mail"),
+			new linkObject("http://www.drudgereport.com", "Drudge Report"),
+			new linkObject("http://www.digg.com", "Digg"),
+			new linkObject("http://www.bostonherald.com/sports", "Herald Sports")
+			];
+			
+			function linkObject(url, text) {
+				this.url = url;
+				this.text = text;
+			}
+			
+			
+			
+			
+			$(document).ready( function() { 
+				
+							
+				buildLinks("links");
+				showDiv(0);
+				$("div").each(function(i) {
+					//alert(this.id);
+				});
+				
+				
+				function hideDivs() {
+					linkCount = 0;
+					
+					
+					
+					jQuery.each(links, function() {
+						//alert("Hiding div content" + linkCount);
+						$("#" + "content" + linkCount).hide();
+						linkCount++;
+					});
+				}
+				
+				function showDiv(div) {
+					hideDivs();
+					$("#content" + div).show()
+				}
+				
+				// Reroute links
+				// Instead of going directly to the link show only the div
+				// which is showing the link.  Prevents a page load
+
+				$(".navLink").click(function(event) {
+					event.preventDefault();
+					
+					showDiv(event.target.id);
+					
+				});
+				
+				// Builds the link menu
+				function buildLinks(div) {
+					linkCount = 0;
+					divText = "";
+					for (i = 0; i < links.length; i++) {
+						// Build the actual link
+						linkText = '<a id="' + linkCount + '" class="navLink" href="' + links[linkCount].url + '">' + links[linkCount].text + '</a>'
+						$("#" + div).append(linkText + " | ");
+						
+						// Build the div
+						divText += '<div id="content' + linkCount + '">';
+						
+						// Build the iframe
+						iframeText = '<iframe height="960", width="100%" src="' + links[linkCount].url + '"></iframe>'
+						divText += iframeText;
+						divText += ("Div " + linkCount);
+						divText += "</div>";
+						linkCount++;
+					}
+					$("body").append(divText);
+				}
+			});
+		</script>
+	</head>
+
+	<body>
+		
+		<div id="links">
+	
+			
+		</div>
+		
+	</body>
+</html> 
